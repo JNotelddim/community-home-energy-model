@@ -18,5 +18,6 @@ code for a home was made available to us as a Hex notebook.)
 TBD
 
 ```
+python3 -m pip install -r requirements.txt
 python3 src/main.py
 ```
