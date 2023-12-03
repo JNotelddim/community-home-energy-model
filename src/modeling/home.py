@@ -2,13 +2,7 @@ from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 import math
 
-# Also define a few permanent constants
-JOULES_PER_KWH = 3.6e+6
-JOULES_PER_MEGAJOULE = 1e9
-SECONDS_PER_HOUR = 3600
-AIR_VOLUMETRIC_HEAT_CAPACITY = 1200 # Energy in joules per cubic meter of air per degree K. (J/m3/K)
-
-# To keep things tidier, we define a HomeCharacteristics dataclass to bunch all the defined and calculated attributes together
+# To keep things tidier, we define a Home dataclass to bunch all the defined and calculated attributes together
 @dataclass_json
 @dataclass
 class Home:
