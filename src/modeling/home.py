@@ -77,3 +77,17 @@ class Home:
             south_facing_window_size_sq_m=self.south_facing_window_size_sq_m, window_solar_heat_gain_coefficient=self.window_solar_heat_gain_coefficient
         )
         return output
+    
+    def __getitem__(self,key):
+        return getattr(self, key)
+    # def __getitem__(self,key):
+    #     match key:
+    #         case "hvac_overall_system_efficiency":
+    #             return self.hvac_overall_system_efficiency
+    #         case "ach50":
+    #             return self.ach50
+    #         case _:
+    #             return None
+
+    def __setitem__(self,key, value):
+        setattr(self, key, value)
