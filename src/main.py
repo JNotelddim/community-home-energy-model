@@ -1,5 +1,4 @@
-# import sys
-# import random
+import math
 import json
 import pvlib
 
@@ -22,7 +21,7 @@ if __name__ == '__main__':
         for i, h in enumerate(homes_data["homes"]):
             print(f'Creating home {i}')
             homes.append(Home(
-                id=i,
+                id=i+1,
                 latitude=h["latitude"],
                 longitude=h["longitude"],
                 heating_setpoint_c=h["heating_setpoint_c"],
@@ -37,25 +36,25 @@ if __name__ == '__main__':
                 window_solar_heat_gain_coefficient=h["window_solar_heat_gain_coefficient"],
             ))
 
-            # print(f'Home {i} lat: {homes[-1].latitude}, wall_insulation_r_value: {homes[-1].wall_insulation_r_value_imperial}')
-            print(homes[-1])
-
+        [print(home) for home in homes] 
 
         # only calculating weather data for the first home in the neighborhood
         # assuming the neighborhood is small enought that they'll all be the same.
         print('Generating solar weather data...')
         [solar_weather_timeseries, solar_position_timeseries, window_irradiance]=weather_for_home(homes[0], MODEL_YEAR)
 
-        for i, home in enumerate(homes):
-            print(f'Modeling home {i}\'s energy...')
+        models={}
+        for home in homes:
+            print(f'Modeling home {home.id}\'s energy...')
 
-            home_energy_model=model_home_energy(
+            models[home.id] = model_home_energy(
                 home,
                 solar_weather_timeseries,
                 window_irradiance
             )
 
-            # if i == 1:
-            home_annual_hvac_energy_use=get_annual_home_energy_use(home_energy_model)
-            print(f'home {i} annual energy use: {home_annual_hvac_energy_use}')
+        print("Annual totals for each home's energy use:")
+        for home_id in models.keys():
+            home_annual_hvac_energy_use=get_annual_home_energy_use(models[home_id])
+            print(f'home {home_id} annual energy use: {math.floor(home_annual_hvac_energy_use)} kWh')
 
