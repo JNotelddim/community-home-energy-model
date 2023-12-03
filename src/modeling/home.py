@@ -6,6 +6,7 @@ import math
 @dataclass_json
 @dataclass
 class Home:
+    id: str
     latitude: float
     longitude: float
     heating_setpoint_c: int
@@ -56,3 +57,23 @@ class Home:
         # More info: https://www.greenspec.co.uk/building-design/thermal-mass/
         HEAT_CAPACITY_FUDGE_FACTOR = 1e5
         return self.building_volume_cu_m * HEAT_CAPACITY_FUDGE_FACTOR
+
+    # @property
+    def __str__(self):
+        output='''Home {id}:
+            lat: {latitude}, long: {longitude},
+            heating: {heating_setpoint}, cooling: {cooling_setpoint},
+            hvac_capacity_w: {hvac_capacity_w}, hvac_overall_system_efficiency: {hvac_overall_system_efficiency},
+            conditioned_floor_area_sq_m: {conditioned_floor_area_sq_m}, ceiling_height_m: {ceiling_height_m}, 
+            wall_insulation_r_value_imperial: {wall_insulation_r_value_imperial}, ach50: {ach50},
+            south_facing_window_size_sq_m: {south_facing_window_size_sq_m}, window_solar_heat_gain_coefficient: {window_solar_heat_gain_coefficient}
+        '''.format(
+            id=self.id,
+            latitude=self.latitude, longitude=self.longitude,
+            heating_setpoint=self.heating_setpoint_c, cooling_setpoint=self.cooling_setpoint_c,
+            hvac_capacity_w=self.hvac_capacity_w, hvac_overall_system_efficiency=self.hvac_overall_system_efficiency,
+            conditioned_floor_area_sq_m=self.conditioned_floor_area_sq_m, ceiling_height_m=self.ceiling_height_m, 
+            wall_insulation_r_value_imperial=self.wall_insulation_r_value_imperial, ach50=self.ach50,
+            south_facing_window_size_sq_m=self.south_facing_window_size_sq_m, window_solar_heat_gain_coefficient=self.window_solar_heat_gain_coefficient
+        )
+        return output

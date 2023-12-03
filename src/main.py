@@ -6,6 +6,7 @@ import pvlib
 from modeling.home import Home
 from modeling.home_weather import weather_for_home
 from modeling.energy_model import model_home_energy
+from modeling.home_energy_use_aggregate import get_annual_home_energy_use
 
 
 MODEL_YEAR=2022
@@ -21,6 +22,7 @@ if __name__ == '__main__':
         for i, h in enumerate(homes_data["homes"]):
             print(f'Creating home {i}')
             homes.append(Home(
+                id=i,
                 latitude=h["latitude"],
                 longitude=h["longitude"],
                 heating_setpoint_c=h["heating_setpoint_c"],
@@ -34,7 +36,10 @@ if __name__ == '__main__':
                 south_facing_window_size_sq_m=h["south_facing_window_size_sq_m"],
                 window_solar_heat_gain_coefficient=h["window_solar_heat_gain_coefficient"],
             ))
-            print(f'Home {i} lat: {homes[-1].latitude}, wall_insulation_r_value: {homes[-1].wall_insulation_r_value_imperial}')
+
+            # print(f'Home {i} lat: {homes[-1].latitude}, wall_insulation_r_value: {homes[-1].wall_insulation_r_value_imperial}')
+            print(homes[-1])
+
 
         # only calculating weather data for the first home in the neighborhood
         # assuming the neighborhood is small enought that they'll all be the same.
@@ -49,7 +54,8 @@ if __name__ == '__main__':
                 solar_weather_timeseries,
                 window_irradiance
             )
-            # TODO:
-            # home_annual_hvac_energy_use=get_annual_home_energy_use(home_energy_model)
-            # print(f'home {i} annual energy use: {home_annual_hvac_energy_use}')
+
+            # if i == 1:
+            home_annual_hvac_energy_use=get_annual_home_energy_use(home_energy_model)
+            print(f'home {i} annual energy use: {home_annual_hvac_energy_use}')
 
