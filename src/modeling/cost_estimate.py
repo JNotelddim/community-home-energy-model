@@ -12,6 +12,7 @@ def estimate_cost_by_monthly_consumption_bc(monthly_consumption):
     # billing periods are 62-day cycles which I'm just going to simplify to a 2-month cycle.
     # print(f"Estimating consumption costs based on this data: ...")
     # print(monthly_consumption)
+    # print(f"Calcutating cost for annual consumption of: {sum(monthly_consumption)} kWh...")
     period_charges=[]
     for i in range(6):
         base_charge=62*BASE_DAILY_RATE_CAD # This obviously isn't exact when we simplify the cycle from 62-days to 2 months.
@@ -23,5 +24,7 @@ def estimate_cost_by_monthly_consumption_bc(monthly_consumption):
         # print(f"Estimated charge for cycle {i} = ${total_charge} CAD.")
         # print(f" __ Based on: base: ${base_charge} + step_one: ${step_one_charge} + step_two: ${step_two_charge} with total period consumption: {grouped_consumption} kWh.")
         period_charges.append(total_charge)
+
+    # print(f"= ${sum(period_charges)}")
     
     return sum(period_charges)
