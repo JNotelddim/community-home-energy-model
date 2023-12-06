@@ -18,7 +18,7 @@ targets={
 if __name__ == '__main__':
     print("Home kit.")
 
-    with open("src/data/homes.json", "r") as read_file:
+    with open("src/data/general_average_homes.json", "r") as read_file:
         homes_data = json.load(read_file)
 
         homes=[]
@@ -126,10 +126,3 @@ if __name__ == '__main__':
         neighborhood_cost_difference=round(neighborhood_sum_cost_before - neighborhood_sum_cost_after, 2)
         print(f"Total Neighborhood energy consumption savings: {neighborhood_consumption_difference} kWh ({round((neighborhood_consumption_difference / neighborhood_sum_consumption_before) * 100)}%)")
         print(f"Total Neighborhood energy cost savings: ${neighborhood_cost_difference} ({round((neighborhood_cost_difference / neighborhood_sum_cost_before) * 100)}%)")
-
-        
-
-
-            
-            
-
