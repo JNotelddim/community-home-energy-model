@@ -1,7 +1,9 @@
 import math
 import json
 import pvlib
+import locale
 import pandas as pd
+from tabulate import tabulate
 
 
 from modeling.home import Home
@@ -21,8 +23,8 @@ targets={
 
 if __name__ == '__main__':
     print("Home kit.")
-
-    with open("src/data/general_average_homes.json", "r") as read_file:
+    homes_file = "src/data/average_us_homes.json"
+    with open(homes_file, "r") as read_file:
         homes_data = json.load(read_file)
 
         canada_incentives = json.load(open("src/data/canada_incentives.json", "r"))
@@ -58,7 +60,7 @@ if __name__ == '__main__':
             average_household_size = round(sum(household_sizes) / len(household_sizes))
             scenarios = build_tax_scenarios(household_income_min,household_income_max,ownership_statuses)
         
-        neighborhood = NeighborhoodProperties(homes[0]["latitude"],homes[0]["longitude"],int(household_income_min),int(household_income_max))
+        neighborhood = NeighborhoodProperties(homes[0]["latitude"],homes[0]["longitude"],int(household_income_min),int(household_income_max), len(homes_data["homes"]))
 
 
         print("_______________________")
@@ -66,10 +68,10 @@ if __name__ == '__main__':
 
 
         print("_______________________")
-        print("Average Household Data")
-        print("Incomes range from $"+str(household_income_min)+" to $"+str(household_income_max))
+        print("Neighborhood Data")
+        print("Number of Homes in Neighborhood: "+str(neighborhood.homes_count))
+        print("Household Incomes range from $"+str(household_income_min)+" to $"+str(household_income_max))
         print("Average Household Size: "+str(average_household_size))
-
 
         # only calculating weather data for the first home in the neighborhood
         # assuming the neighborhood is small enought that they'll all be the same.
@@ -156,7 +158,7 @@ if __name__ == '__main__':
 
 
         print("_______________________")
-        print("Potential Neighborhood Rebates and Credits")
+        print("Potential Neighborhood Rebates and Credits Summary")
         neighborhood_incentives = [] 
         rebates = []
         tax_credits = []
@@ -165,16 +167,17 @@ if __name__ == '__main__':
         tax_credit_detail = pd.DataFrame(tax_credits)
         if (neighborhood.get_country() == "us"):
 
+            locale.setlocale(locale.LC_ALL, 'en_US')
+
             for scenario_label, scenario_item in scenarios.items():
                 params = {
                     "label": scenario_label,
                     "zip": neighborhood.get_postcode(),
-                    "owner_status": neighborhood.owner_status,
+                    "owner_status": scenario_item["owner_status"],
                     "household_income": scenario_item["household_income"],
                     "tax_filing": scenario_item["tax_filing"],
-                    "household_size": household_size,
+                    "household_size": average_household_size,
                 }
-                print(params)
                 new_incentive = get_incentives_for_scenario(params, scenario_label)
                 neighborhood_incentives.append(new_incentive["summary"])
                 
@@ -210,5 +213,21 @@ if __name__ == '__main__':
             incentive_table = pd.DataFrame(neighborhood_incentives)
             rebate_detail = pd.DataFrame(rebates)
             tax_credit_detail = pd.DataFrame(tax_credits)
+            
+            print (locale.currency(incentive_table.iloc[0]["pos_savings"], grouping=True)+" USD in savings for each income-qualified home")
+            print (locale.currency(incentive_table.iloc[0]["pos_savings"] * neighborhood.homes_count, grouping=True)+" USD total potential savings for Neighborhood")
+            print (locale.currency(incentive_table.iloc[1]["tax_savings"], grouping=True)+" USD additional in tax credits available")
+            print (locale.currency(incentive_table.iloc[1]["tax_savings"] * neighborhood.homes_count, grouping=True)+" USD total potential tax credits for Neighborhood")
+            print (locale.currency(incentive_table.iloc[1]["performance_rebate_savings"], grouping=True)+" Rebates for high-efficiency upgrades")
+            if (incentive_table.iloc[2]["performance_rebate_savings"] > incentive_table.iloc[1]["performance_rebate_savings"]):
+                print (locale.currency(incentive_table.iloc[2]["performance_rebate_savings"], grouping=True)+" for income-qualified homes")
+            print (locale.currency(incentive_table.iloc[2]["performance_rebate_savings"] * neighborhood.homes_count, grouping=True)+" USD additional rebates available for Neighborhood")
+
+            print("_______________________")
+            print("Rebates and Credits Detail")
+            print(tabulate(rebate_detail, headers='keys', tablefmt='psql'))
+            print(tabulate(tax_credit_detail, headers='keys', tablefmt='psql'))
+
+
         if (neighborhood.get_country() == "ca"):
             print("Find rebates for your province at "+canada_incentives[str(neighborhood.get_state_province())]["url"])

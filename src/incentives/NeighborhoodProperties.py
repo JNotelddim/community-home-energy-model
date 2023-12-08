@@ -5,11 +5,12 @@ from geopy.geocoders import Nominatim
 @dataclass
 class NeighborhoodProperties:
 
-    def __init__(self, latitude, longitude, household_income_min, household_income_max):
+    def __init__(self, latitude, longitude, household_income_min, household_income_max, homes_count):
         self.latitude = latitude
         self.longitude = longitude
         self.household_income_max = household_income_max
         self.household_income_min = household_income_min
+        self.homes_count = homes_count
 
 
     def get_currency_code(self) -> str:
