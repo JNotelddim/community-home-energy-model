@@ -11,6 +11,7 @@ from modeling.home_weather import weather_for_home
 from modeling.energy_model import model_home_energy
 from modeling.home_energy_use_aggregate import get_annual_home_energy_use, get_monthly_home_energy_use
 from modeling.cost_estimate import estimate_cost_by_monthly_consumption_bc
+from modeling.equivalencies import *
 from incentives.NeighborhoodProperties import *
 from incentives.build_tax_scenarios import build_tax_scenarios
 from incentives.get_incentives import get_incentives_for_scenario
@@ -153,9 +154,12 @@ if __name__ == '__main__':
         print("_______________________")
         neighborhood_consumption_difference=round(neighborhood_sum_consumption_before - neighborhood_sum_consumption_after)
         neighborhood_cost_difference=round(neighborhood_sum_cost_before - neighborhood_sum_cost_after, 2)
-        print(f"Total Neighborhood energy consumption savings: {neighborhood_consumption_difference} kWh ({round((neighborhood_consumption_difference / neighborhood_sum_consumption_before) * 100)}%)")
-        print(f"Total Neighborhood energy cost savings: ${neighborhood_cost_difference} ({round((neighborhood_cost_difference / neighborhood_sum_cost_before) * 100)}%)")
-
+        print(f"Total Neighborhood energy consumption savings per year: {neighborhood_consumption_difference} kWh ({round((neighborhood_consumption_difference / neighborhood_sum_consumption_before) * 100)}%)")
+        print(f"Total Neighborhood energy cost savings per year: ${neighborhood_cost_difference} ({round((neighborhood_cost_difference / neighborhood_sum_cost_before) * 100)}%)")
+        print(f"Carbon emissions avoided per year: {round(kwh_to_mtco2(neighborhood_consumption_difference),2)} metric tons of CO2" )
+        print(f"Equivalent to {round(mtco2_to_10_year_trees(kwh_to_mtco2(neighborhood_consumption_difference)),0)} tree seedlings grown for 10 years" )
+        print(f"Equivalent to {round(mtco2_to_gallons_of_gas(kwh_to_mtco2(neighborhood_consumption_difference)),2)} gallons of gas saved per year" )
+        print(f"Equivalent to carbon sequestered by {round(mtco2_to_forest_acre_year(kwh_to_mtco2(neighborhood_consumption_difference)),2)} acres of forest per year" )
 
         print("_______________________")
         print("Potential Neighborhood Rebates and Credits Summary")
@@ -231,3 +235,4 @@ if __name__ == '__main__':
 
         if (neighborhood.get_country() == "ca"):
             print("Find rebates for your province at "+canada_incentives[str(neighborhood.get_state_province())]["url"])
+'''
