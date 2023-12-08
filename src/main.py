@@ -235,4 +235,3 @@ if __name__ == '__main__':
 
         if (neighborhood.get_country() == "ca"):
             print("Find rebates for your province at "+canada_incentives[str(neighborhood.get_state_province())]["url"])
-'''
