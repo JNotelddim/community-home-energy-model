@@ -1,0 +1,15 @@
+{
+    "British Columbia": {"url":"https://betterhomesbc.ca/rebate-search-tool/"},
+    "Alberta": {"url": "https://www.energyhub.org/incentives/#alberta"},
+    "Manitoba": {"url": "https://www.energyhub.org/incentives/#manitoba"},
+    "New Brunswick / Nouveau-Brunswick": {"url": "https://www.energyhub.org/incentives/#new-brunswick"},
+    "Newfoundland and Labrador": {"url": "https://www.energyhub.org/incentives/#newfoundland-labrador"},
+    "Northwest Territories": {"url": "https://www.energyhub.org/incentives/#northwest-territories"},
+    "Nova Scotia": {"url": "https://www.energyhub.org/incentives/#nova-scotia"},
+    "ᓄᓇᕗᑦ Nunavut": {"url": "https://www.energyhub.org/incentives/#nunavut"},
+    "Ontario": {"url": "https://www.energyhub.org/incentives/#ontario"},
+    "Prince Edward Island": {"url": "https://www.energyhub.org/incentives/#prince-edward-island"},
+    "Québec": {"url": "https://www.energyhub.org/incentives/#quebec"},
+    "Saskatchewan": {"url": "https://www.energyhub.org/incentives/#saskatchewan"},
+    "Yukon": {"url": "https://www.energyhub.org/incentives/#yukon-territory"}
+}

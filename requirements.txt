@@ -1,3 +1,4 @@
 pvlib==0.10.2
 dataclasses-json==0.6.3
 python-dotenv==1.0.0
+geopy==2.4.1
